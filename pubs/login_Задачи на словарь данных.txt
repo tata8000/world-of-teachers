@@ -1,0 +1,193 @@
+Определить  многостолбцовые ограничения для каждой таблицы схемы.
+WITH T AS (
+    SELECT ROW_NUMBER() OVER (PARTITION BY UC.TABLE_NAME ORDER BY UC.TABLE_NAME) TAB_NUM, UC.TABLE_NAME TAB_NAM, UC.CONSTRAINT_NAME CON_NAM, UC.CONSTRAINT_TYPE CON_TYPE, COUNT(UCC.COLUMN_NAME) CNT
+    FROM USER_CONSTRAINTS UC INNER JOIN USER_CONS_COLUMNS UCC
+    ON(UC.CONSTRAINT_NAME=UCC.CONSTRAINT_NAME)
+    GROUP BY UC.TABLE_NAME, UC.CONSTRAINT_NAME, UC.CONSTRAINT_TYPE
+    HAVING COUNT(UCC.COLUMN_NAME)>1
+),
+T1 AS(SELECT DENSE_RANK() OVER (ORDER BY TAB_NAM) "Номер таблицы", 
+        CASE TO_CHAR(TAB_NUM)
+        WHEN '1' THEN TAB_NAM
+        ELSE ' '
+        END "Таблица", 
+TAB_NUM "Номер ограничения", CON_NAM "Имя ограничения", 
+        CASE CON_TYPE
+        WHEN 'P' THEN 'Первичный ключ'
+        WHEN 'C' THEN 'Ограничение CHECK'
+        WHEN 'R' THEN 'Внешний ключ'
+        WHEN 'U' THEN 'Ограничение UNIQUE'
+        END "Тип ограничения", CNT "Кол-во столбцов", (SELECT MAX(TAB_NUM)
+                                                        FROM T TMP
+                                                        WHERE T.TAB_NAM=TMP.TAB_NAM
+                                                        GROUP BY TAB_NAM) "Кол-во многостолб. ограничений"
+
+FROM T
+)
+SELECT CASE 
+       WHEN "Таблица"=' ' THEN ' '
+       ELSE TO_CHAR("Номер таблицы")
+       END "Номер таблицы", "Таблица", "Номер ограничения", "Имя ограничения", "Тип ограничения", "Кол-во столбцов",
+       CASE 
+       WHEN "Таблица"=' ' THEN ' '
+       ELSE TO_CHAR("Кол-во многостолб. ограничений")
+       END "Кол-во многостолб. ограничений"
+FROM T1;
+---------------------------------------------------------------------------
+Используя словарь данных, получить информацию о первичных ключах и подчиненных таблицах всех таблиц Вашей схемы : ИМЕНА СТОЛБЦОВ И ПОДЧИНЕННЫХ ТАБЛИЦ ВЫВЕСТИ ЧЕРЕЗ ЗАПЯТУЮ И НЕ ИСПОЛЬЗОВАТЬ LISTAGG
+WITH T AS(
+    SELECT UC.TABLE_NAME TABLE_NAME, UCC.COLUMN_NAME COL_NAME, ROW_NUMBER() OVER (PARTITION BY UC.TABLE_NAME ORDER BY UC.TABLE_NAME, UCC.COLUMN_NAME) POS
+    FROM USER_CONSTRAINTS UC INNER JOIN USER_CONS_COLUMNS UCC
+    ON UC.CONSTRAINT_NAME=UCC.CONSTRAINT_NAME
+    WHERE UC.CONSTRAINT_TYPE='P'
+),
+PK AS(
+    SELECT TABLE_NAME, LTRIM(SYS_CONNECT_BY_PATH(COL_NAME,','),',') COLS
+    FROM T
+    WHERE CONNECT_BY_ISLEAF=1
+    START WITH POS=1
+    CONNECT BY PRIOR TABLE_NAME=TABLE_NAME AND PRIOR POS+1=POS
+),
+T2 AS(
+    SELECT UC.TABLE_NAME TABLE_NAME, UC.CONSTRAINT_NAME CON_NAME, UCC.COLUMN_NAME COL_NAME, ROW_NUMBER() OVER (PARTITION BY UC.CONSTRAINT_NAME ORDER BY UC.CONSTRAINT_NAME, UCC.COLUMN_NAME) POS
+    FROM USER_CONSTRAINTS UC INNER JOIN USER_CONS_COLUMNS UCC
+    ON UC.CONSTRAINT_NAME=UCC.CONSTRAINT_NAME
+    WHERE UC.CONSTRAINT_TYPE='U'
+),
+TMP_UN AS(
+    SELECT TABLE_NAME, LTRIM(SYS_CONNECT_BY_PATH(COL_NAME,','),',') UNCOLS, ROW_NUMBER() OVER (PARTITION BY TABLE_NAME ORDER BY TABLE_NAME, CON_NAME) POS
+    FROM T2
+    WHERE CONNECT_BY_ISLEAF=1
+    START WITH POS=1
+    CONNECT BY PRIOR CON_NAME=CON_NAME AND PRIOR POS+1=POS
+),
+UN AS (
+    SELECT TABLE_NAME, REPLACE(LTRIM(SYS_CONNECT_BY_PATH(
+    CASE 
+    WHEN INSTR(UNCOLS,',')=0 OR UNCOLS IS NULL THEN NVL(UNCOLS,'Не имеет ограничения уникальности')
+    ELSE '(' || UNCOLS || ')' 
+    END,'.'),'.'),'.',',') UNCOLS
+    FROM TMP_UN
+    WHERE CONNECT_BY_ISLEAF=1
+    START WITH POS=1
+    CONNECT BY PRIOR TABLE_NAME=TABLE_NAME AND PRIOR POS+1=POS
+),
+T1 AS (
+    SELECT UC.TABLE_NAME CHILD, UC1.TABLE_NAME MAIN, ROW_NUMBER() OVER (PARTITION BY UC1.TABLE_NAME ORDER BY UC1.TABLE_NAME, UC.TABLE_NAME) RN
+    FROM USER_CONSTRAINTS UC INNER JOIN USER_CONSTRAINTS UC1
+    ON UC.R_CONSTRAINT_NAME=UC1.CONSTRAINT_NAME
+    WHERE UC.CONSTRAINT_TYPE='R'
+),
+REF_TABS AS(
+    SELECT MAIN TABLE_NAME, LTRIM(SYS_CONNECT_BY_PATH(CHILD,','),',') TABS
+    FROM T1
+    WHERE CONNECT_BY_ISLEAF=1
+    START WITH RN=1
+    CONNECT BY NOCYCLE PRIOR MAIN=MAIN AND PRIOR RN+1=RN
+)
+SELECT USER_TABLES.TABLE_NAME "Имя таблицы", NVL(COLS,'Первичного ключа не имеет') "Столбцы перв. ключа", NVL(UNCOLS,'Не имеет ограничения уникальности')"Список столб. с огран. уник.", NVL(TABS,'Подчиненных таблиц не имеет') "Список подч. таблиц"
+FROM USER_TABLES LEFT OUTER JOIN PK 
+ON USER_TABLES.TABLE_NAME=PK.TABLE_NAME LEFT OUTER JOIN REF_TABS
+ON USER_TABLES.TABLE_NAME=REF_TABS.TABLE_NAME LEFT OUTER JOIN UN
+ON USER_TABLES.TABLE_NAME=UN.TABLE_NAME
+ORDER BY 1;
+---------------------------------------------------------------------------
+Для каждой таблицы своей схемы выведите:
+Имя таблицы;
+Имя первого по алфавиту столбца первичного ключа;
+Общее число столбцов первичного ключа;
+Имя первой по алфавиту подчиненной таблицы с наибольшим количеством столбцов;
+Общее количество подчиненных таблиц у рассматриваемой таблицы.
+Для проверки правильности работы запроса создайте одну главную таблицу Parent и три подчиненных: Child1 (c 2 столбцами), Child2(c 3 столбцами) и Child3(с 2 столбцами).
+Примечание: Пустых ячеек в результирующем наборе быть не должно. При отсутствии информации в ячейках должен быть размещен соответствующий комментарий. Например, Первичного ключа таблица не имеет, Подчиненных таблиц не имеется и т.д.
+WITH T AS(
+    SELECT UC.TABLE_NAME TABLE_NAME, UCC.COLUMN_NAME COL_NAME, ROW_NUMBER() OVER (PARTITION BY UC.TABLE_NAME ORDER BY UCC.COLUMN_NAME) POS, MAX(UCC.POSITION) OVER (PARTITION BY UC.TABLE_NAME) COUNT
+    FROM USER_CONSTRAINTS UC INNER JOIN USER_CONS_COLUMNS UCC
+    ON UC.CONSTRAINT_NAME=UCC.CONSTRAINT_NAME
+    WHERE UC.CONSTRAINT_TYPE='P'
+),
+PK AS(
+    SELECT TABLE_NAME, COL_NAME, COUNT
+    FROM T
+    WHERE POS=1
+),
+T1 AS (
+    SELECT UC.TABLE_NAME CHILD, UC1.TABLE_NAME MAIN, ROW_NUMBER() OVER (PARTITION BY UC1.TABLE_NAME ORDER BY UC1.TABLE_NAME, UC.TABLE_NAME) RN
+    FROM USER_CONSTRAINTS UC INNER JOIN USER_CONSTRAINTS UC1
+    ON UC.R_CONSTRAINT_NAME=UC1.CONSTRAINT_NAME
+    WHERE UC.CONSTRAINT_TYPE='R'
+),
+T2 AS (
+    SELECT TABLE_NAME, COUNT(*) CNT
+    FROM USER_TAB_COLUMNS UTC
+    GROUP BY TABLE_NAME
+),
+T3 AS(
+    SELECT MAIN, CHILD, RN, CNT, ROW_NUMBER() OVER (PARTITION BY MAIN ORDER BY CNT DESC, RN) RN1, MAX(RN) OVER (PARTITION BY MAIN) CNT_TABS
+    FROM T1 INNER JOIN T2
+    ON T1.CHILD=T2.TABLE_NAME
+)
+SELECT UT.TABLE_NAME "Имя таблицы", NVL(PK.COL_NAME,'Таблица не имеет первичного ключа') "Имя первого стол. перв. ключа", NVL(PK.COUNT,0) "Кол-во столб. перв. ключа", NVL(T3.CHILD,'Таблица не имеет подчиненных таблиц') "Дочерняя таблица", NVL(T3.CNT_TABS,0) "Кол-во доч. таблиц"
+FROM USER_TABLES UT LEFT OUTER JOIN PK
+ON UT.TABLE_NAME=PK.TABLE_NAME LEFT OUTER JOIN T3
+ON UT.TABLE_NAME=T3.MAIN
+WHERE T3.RN1=1 OR T3.RN1 IS NULL;
+---------------------------------------------------------------------------
+еСТЬ НОРМАЛЬНОЕ РЕШЕНИЕ 35 СТРОКА
+Значение из предыдущей строки (что делать если первая строка налл???)
+WITH MT AS (
+    SELECT TO_DATE('01-07-08', 'DD-MM-YY')  DAT, NULL  VAL 
+    FROM DUAL 
+    UNION ALL
+    SELECT TO_DATE('01-08-08', 'DD-MM-YY'), 232 
+    FROM DUAL 
+    UNION ALL
+    SELECT TO_DATE('02-08-08', 'DD-MM-YY'), NULL 
+    FROM DUAL
+    UNION ALL
+    SELECT TO_DATE('10-08-08', 'DD-MM-YY'), 182
+    FROM DUAL
+    UNION ALL
+    SELECT TO_DATE('11-08-08', 'DD-MM-YY'), NULL
+    FROM DUAL
+    UNION ALL
+    SELECT TO_DATE('21-08-08', 'DD-MM-YY'), 240
+    FROM DUAL
+    UNION ALL
+    SELECT TO_DATE('22-08-08', 'DD-MM-YY'), NULL
+    FROM DUAL
+    UNION ALL
+    SELECT TO_DATE('23-08-08', 'DD-MM-YY'), NULL
+    FROM DUAL
+    ORDER BY 1
+),          
+TMP AS ( -- выборка данных, где VAL соответствует NULL, и запись туда значений из предыдущих строк
+    SELECT A.DAT DAT1, B.DAT DAT2
+    FROM MT A LEFT JOIN MT B
+    ON A.DAT > B.DAT AND B.VAL IS NOT NULL
+    WHERE A.VAL IS NULL
+),
+TMP2 AS (
+    SELECT DAT1, MAX(DAT2) DAT2
+    FROM TMP
+    GROUP BY DAT1
+),
+TMP3 AS (
+    SELECT TMP2.DAT1 DAT, MT.VAL VAL
+    FROM TMP2 INNER JOIN MT
+    ON TMP2.DAT2=MT.DAT
+)
+SELECT TO_CHAR(MT.DAT,'DD-MM-YY') DAT, NVL(COALESCE(MT.VAL, TMP3.VAL),-1) MAX_VAL
+FROM MT LEFT OUTER JOIN TMP3
+ON MT.DAT=TMP3.DAT
+ORDER BY MT.DAT;
+---------------------------------------------------------------------------
+Создание таблицы
+CREATE TABLE TEST1 (
+    COLUMN1 NUMBER(3) PRIMARY KEY,
+    COLUMN2 NUMBER(10) UNIQUE,
+    COLUMN3 NUMBER(2),
+    COLUMN4 NUMBER(2),
+    COLUMN5 NUMBER(2),
+    CONSTRAINT TEST1_UN UNIQUE(COLUMN3,COLUMN4,COLUMN5)
+)
