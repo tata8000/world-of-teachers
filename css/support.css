@@ -1,0 +1,156 @@
+.section_FAQ {
+display: flex;
+flex-wrap: wrap;
+flex-basis: 100%;
+flex-flow: wrap;
+order: 2;
+margin: 2vh 1vw 2vh 1vw;
+min-height: 66vh;
+position: relative;
+background-color: rgba(255, 255, 255, 1);
+}
+
+.text_FAQ {
+margin: 1vh 1vw 1vh 1vw;
+flex-basis: 100%;
+min-height: 10vh;
+}
+
+.text_FAQ p {
+font-family: "Markella", "Times New Roman", serif;
+font-size: 13pt;
+text-align: center;
+}
+
+.FAQ {
+flex-basis: 100%;
+min-height: 40vh;
+}
+
+/*Добавляем поля*/
+.faq-section{
+flex-basis: 100%;
+}
+
+/*Скрываем чекбоксы и абзацы*/
+.faq-section input,
+.faq-section p{
+display: none;
+}
+
+/*Если чекбокс отмечен, показываем все абазацы*/
+.faq-section input[type=checkbox]:checked~p{
+display: block;
+color: black;
+font-size: 13pt;
+font-family: "Markella", "Times New Roman", serif;
+padding-left: 10px;
+/* Восстанавливаем обрезание по умолчаниюы */
+text-overflow: clip;
+white-space: normal;
+overflow: visible;
+background: rgba(231, 240, 255, 1);
+margin: 15px 10px 15px;
+}
+
+/*Стили для метки*/
+.faq-section label{
+font-family: "Markella", "Times New Roman", serif;
+font-size: 13pt;
+cursor: pointer;
+background: rgba(207, 226, 255, 1);
+display: block;
+position: relative;
+padding: 7px 10px;
+font-weight: bold;
+border: 1px solid rgba(45, 113, 214, 0.9);
+border-left: 3px solid rgba(45, 113, 214, 0.9);
+text-shadow: 2px 2px 0 rgba(255,255,255,1);
+transition: all .15s ease-out;
+}
+
+/*Удаляем выделение текста при переключении*/
+.faq-section label::selection{
+background: none;
+}
+
+.faq-section label:hover{
+background: rgba(223, 233, 255, 1);
+}
+
+/*Стрелка метки - состояние по умолчанию*/
+.faq-section label::before{
+content: '';
+position: absolute;
+right: 4px;
+top: 50%;
+margin-top: -6px;
+border: 6px solid transparent;
+border-left-color: inherit;
+}
+
+/*Обновляем стрелку справа*/
+.faq-section input[type=checkbox]:checked~label::before{
+border: 6px solid transparent;
+border-top-color: inherit;
+margin-top: -3px;
+right: 10px;
+}
+
+.support_FAQ {
+display: flex;
+flex-basis: 100%;
+min-height: 10vh;
+align-items: center;
+padding-right: 10px;
+justify-content: flex-end;
+}
+
+.support_image {
+cursor: pointer;
+width: 50px;
+height: 50px;
+}
+
+form p {
+font-family: "Markella", "Times New Roman", serif;
+font-size: 13pt;
+}
+
+.email {
+min-width: 350px;
+font-family: "Markella", "Times New Roman", serif;
+font-size: 13pt;
+outline: none;
+}
+
+input::placeholder {
+color: black;
+font-style: italic;
+font-family: "Markella", "Times New Roman", serif;
+font-size: 13pt;
+}
+
+textarea {
+min-width: 350px;
+font-family: "Markella", "Times New Roman", serif;
+font-size: 13pt;
+outline: none;
+}
+
+textarea::placeholder {
+color: black;
+font-style: italic;
+font-family: "Markella", "Times New Roman", serif;
+font-size: 13pt;
+}
+
+.sub_add {
+min-width: 100px;
+cursor: pointer;
+outline: none;
+font-family: "Markella", "Times New Roman", serif;
+font-size: 13pt;
+min-height: 30px;
+margin: auto;
+}

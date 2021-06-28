@@ -1,0 +1,125 @@
+.section_interest {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 90%;
+    order: 2;
+    margin: 2vh 1vw 2vh 1vw;
+    min-height: 50vh;
+    position: relative;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.act1 {
+    background: rgba(81, 134, 232, 0.3);
+    padding: 5px 20px 5px 20px;
+}
+
+.act1:hover {
+    background: rgba(81, 134, 232, 0.5);
+}
+
+.act2 {
+    background: rgba(81, 134, 232, 0.3);
+    padding: 5px 20px 5px 20px;
+}
+
+.act2:hover {
+    background: rgba(81, 134, 232, 0.5);
+}
+
+.act3 {
+    background: rgba(81, 134, 232, 0.5);
+    padding: 5px 20px 5px 20px;
+}
+
+.act4 {
+    background: rgba(81, 134, 232, 0.3);
+    padding: 5px 20px 5px 20px;
+}
+
+.act4:hover {
+    background: rgba(81, 134, 232, 0.5);
+}
+
+.head {
+    display: flex;
+    flex-basis: 100%;
+    min-height: 15vh;
+    color: white;
+    background-color: rgba(45, 113, 214, 0.9);
+}
+
+.icon {
+    display: flex;
+    flex-basis: 5%;
+    margin: auto;
+    justify-content: center;
+}
+
+.interest_image {
+    width: 25px;
+    height: 25px;
+}
+
+.text_interest {
+    display: flex;
+    flex-basis: 50%;
+    align-items: center;
+}
+
+.text_interest p {
+    font-family: "Markella", "Times New Roman", serif;
+    font-size: 18pt;
+}
+
+.login {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+    margin: auto;
+    flex-basis: 45%;
+}
+
+.login p {
+    font-family: "Markella", "Times New Roman", serif;
+    font-size: 13pt;
+    padding-right: 10px;
+}
+
+.user_login {
+    background-color: rgba(40, 105, 208, 1);
+    padding: 0 10px 0;
+    border-radius: 5px;
+}
+
+.tema {
+    flex-basis: 100%;
+    min-height: 35vh;
+    margin: 0 50px 0;
+}
+
+.subjectItem {
+    font-family: "Markella", "Times New Roman", serif;
+    font-size: 15pt;
+    font-weight: bold;
+    padding: 7px 0 6px 5px;
+    min-width: 45vw;
+    border-left: 10px solid rgba(45, 113, 214, 0.5);
+    border-bottom: 2px solid rgba(45, 113, 214, 1);
+}
+
+.interestItem {
+    font-family: "Markella", "Times New Roman", serif;
+    font-size: 13pt;
+    margin-left: 20px;
+}
+
+.interestItem a {
+    text-decoration: none;
+    color: black;
+}
+
+.interestItem a:hover {
+    font-style: italic;
+    color: rgba(45, 113, 214, 1);
+}

@@ -1,0 +1,191 @@
+.section_mypersonaldata {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 90%;
+    order: 2;
+    margin: 2vh 1vw 2vh 1vw;
+    min-height: 50vh;
+    position: relative;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.act1 {
+    background: rgba(81, 134, 232, 0.3);
+    padding: 5px 20px 5px 20px;
+}
+
+.act1:hover {
+    background: rgba(81, 134, 232, 0.5);
+    padding: 5px 20px 5px 20px;
+}
+
+.act2 {
+    background: rgba(81, 134, 232, 0.3);
+    padding: 5px 20px 5px 20px;
+}
+
+.act2:hover {
+    background: rgba(81, 134, 232, 0.5);
+    padding: 5px 20px 5px 20px;
+}
+
+.act3 {
+    background: rgba(81, 134, 232, 0.3);
+    padding: 5px 20px 5px 20px;
+}
+
+.act3:hover {
+    background: rgba(81, 134, 232, 0.5);
+    padding: 5px 20px 5px 20px;
+}
+
+.act4 {
+    background: rgba(81, 134, 232, 0.5);
+    padding: 5px 20px 5px 20px;
+}
+
+.mypersonaldata {
+    display: flex;
+    flex-basis: 100%;
+    min-height: 15vh;
+    color: white;
+    background-color: rgba(45, 113, 214, 0.9);
+}
+
+.icon {
+    display: flex;
+    flex-basis: 5%;
+    margin: auto;
+    justify-content: center;
+}
+
+.mypersonaldata_image {
+    width: 25px;
+    height: 25px;
+}
+
+.text_data {
+    display: flex;
+    flex-basis: 50%;
+    align-items: center;
+}
+
+.text_data p {
+    font-family: "Markella", "Times New Roman", serif;
+    font-size: 18pt;
+}
+
+.login {
+    display: flex;
+    justify-content: flex-end;
+    padding-right: 20px;
+    margin: auto;
+    flex-basis: 45%;
+}
+
+.login p {
+    font-family: "Markella", "Times New Roman", serif;
+    font-size: 13pt;
+    padding-right: 10px;
+}
+
+.user_login {
+    background-color: rgba(40, 105, 208, 1);
+    padding: 0 10px 0;
+    border-radius: 5px;
+}
+
+.form_edit {
+    display: flex;
+    flex-wrap: wrap;
+    flex-basis: 100%;
+    min-height: 35vh;
+    margin: 0 50px 0;
+}
+
+.form_edit h1 {
+    font-family: "Markella", "Times New Roman", serif;
+    font-size: 18pt;
+    text-align: center;
+}
+
+.text_edit_top {
+    flex-basis: 100%;
+    margin: auto;
+}
+
+.text_edit_top p {
+    font-family: "Markella", "Times New Roman", serif;
+    text-align: center;
+    font-weight: bold;
+    font-size: 18pt;
+}
+
+.text_edit_bottom {
+    display: flex;
+    flex-basis: 100%;
+}
+
+.text_edit_bottom_left {
+    display: flex;
+    flex-basis: 60%;
+    justify-content: center;
+}
+
+.text_edit_bottom_left_photo {
+    justify-content: center;
+}
+
+.my_photo {
+    width: 250px;
+    height: 200px;
+}
+
+.text_edit_bottom_right {
+    flex-basis: 40%;
+}
+
+.text_edit_bottom_right p {
+    font-size: 13pt;
+    font-family: "Markella", "Times New Roman", serif;
+}
+
+.enter {
+    font-size: 13pt;
+    width: 200px;
+    background: none;
+    font-family: "Markella", "Times New Roman", serif;
+    color: black;
+    border: none;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: black;
+    outline: none;
+}
+
+input::placeholder {
+    color: black;
+    font-style: italic;
+    font-family: "Markella", "Times New Roman", serif;
+    font-size: 12pt;
+}
+
+.combo {
+    width: 200px;
+    font-size: 13pt;
+    font-family: "Markella", "Times New Roman", serif;
+    background: none;
+    border: none;
+    border-bottom-width: 2px;
+    border-bottom-style: solid;
+    border-bottom-color: black;
+    outline: none;
+}
+
+.save_btn {
+    cursor: pointer;
+    font-size: 13pt;
+    width: 200px;
+    font-family: "Markella", "Times New Roman", serif;
+    outline: none;
+}

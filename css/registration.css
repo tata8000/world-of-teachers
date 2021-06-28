@@ -1,0 +1,139 @@
+body {
+display: flex;
+margin: 0;
+height: 100vh;
+font-family: "Markella", "Times New Roman", serif;
+}
+
+.container {
+margin: auto;
+min-width: 500px;
+color: white;
+}
+
+.container_top {
+display: flex;
+flex-basis: 100%;
+margin-bottom: 20px;
+background-color: rgba(45, 113, 214, 0.9);
+box-shadow: 10px 10px 0 rgba(20, 80, 169, 0.9);
+}
+
+.back_block {
+display: flex;
+margin: auto;
+flex-basis: 20%;
+justify-content: flex-end;
+}
+
+.ago {
+width: 30px;
+height: 30px;
+cursor: pointer;
+background: none;
+outline: none;
+}
+
+.text {
+display: flex;
+flex-basis: 80%;
+margin-right: 85px;
+justify-content: center;
+}
+
+.reg_con {
+    display: flex;
+flex-basis: 80%;
+margin-right: -50px;
+justify-content: center;
+text-align: center;
+}
+
+.container_bottom {
+display: flex;
+margin: auto;
+padding: 20px;
+background-color: rgba(45, 113, 214, 0.9);
+box-shadow: 10px 10px 0 rgba(20, 80, 169, 0.9);
+}
+
+.container_bottom_arg {
+display: flex;
+flex-wrap: wrap;
+margin: auto;
+padding: 20px;
+text-align: center;
+background-color: rgba(45, 113, 214, 0.9);
+box-shadow: 10px 10px 0 rgba(20, 80, 169, 0.9);
+}
+
+.agreement {
+flex-basis: 100%;
+height: 200px;
+width: 200px;
+text-align: left;
+padding-left: 10px;
+padding-right: 10px;
+overflow: auto;
+border: 1px solid white;
+}
+
+.container_bottom_block {
+margin: auto;
+width: 200px;
+}
+
+.container_bottom_block p {
+font-size: 15pt;
+font-family: "Markella", "Times New Roman", serif;
+}
+
+.container_bottom_block_agr {
+margin: auto;
+}
+
+.enter {
+font-size: 13pt;
+width: 200px;
+background: none;
+font-family: "Markella", "Times New Roman", serif;
+color: white;
+border: none;
+border-bottom-width: 2px;
+border-bottom-style: solid;
+border-bottom-color: white;
+outline: none;
+}
+
+input::placeholder {
+color: white;
+font-style: italic;
+font-family: "Markella", "Times New Roman", serif;
+font-size: 12pt;
+}
+
+.registration_btn {
+cursor: pointer;
+min-width: 205px;
+min-height: 35px;
+font-size: 13pt;
+font-family: "Markella", "Times New Roman", serif;
+}
+
+.combo {
+cursor: pointer;
+min-width: 205px;
+font-size: 13pt;
+outline: none;
+font-family: "Markella", "Times New Roman", serif;
+}
+
+ol {
+list-style: none;
+counter-reset: li;
+}
+
+li:before {
+counter-increment: li;
+content: counters(li, ".") ". ";
+}

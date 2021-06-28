@@ -1,0 +1,250 @@
+.open>.dropdown-menu {
+height: 40vh;
+overflow: auto;
+min-width: 300px;
+}
+
+body {
+margin: 0;
+min-height: 100vh;
+min-width: 100vw;
+}
+
+.container {
+display: flex;
+flex-flow: column wrap;
+min-height: 100vh;
+min-width: 100vw;
+padding-left: 0;
+padding-right: 0;
+background-color: rgba(224, 224, 224, 1);
+}
+
+/* —-— Шапка сайта —-— */
+.header {
+display: flex;
+flex-basis: 100%;
+order: 1;
+min-height: 15vh;
+background-color: rgba(224, 224, 224, 1);
+}
+
+.logo {
+display: flex;
+flex-basis: 50%;
+background-color: rgba(45, 113, 214, 0.9);
+}
+
+.logo_image {
+width: 400px;
+height: 90px;
+margin-top: auto;
+margin-bottom: auto;
+}
+
+.info {
+display: flex;
+flex-basis: 50%;
+padding-right: 20px;
+background-color: rgba(45, 113, 214, 0.9);
+}
+
+.info ul {
+display: flex;
+list-style-type: none;
+margin-top: auto;
+margin-bottom: auto;
+margin-left: auto;
+}
+
+.info a {
+color: white;
+margin: 10px;
+font-family: cursive;
+font-size: 13pt;
+text-decoration: none;
+}
+
+.output {
+width: 20px;
+height: 20px;
+padding-top: 4px;
+}
+
+.info li:hover {
+background-color: rgb(28, 101, 211);
+}
+/* —-— —-— */
+
+/* —-— Средняя часть сайта —-— */
+.content {
+display: flex;
+flex-flow: row nowrap;
+order: 3;
+min-height: 70vh;
+}
+
+.aside {
+display: flex;
+flex-basis: 115px;
+margin: 2vh 0 0;
+order: 1;
+}
+
+.aside ul {
+list-style-type: none;
+margin: 0 0 20px;
+padding: 0;
+position: fixed;
+background-color: rgba(255, 255, 255, 1);
+box-shadow: 3px 3px 5px rgba(112, 112, 112, 1);
+}
+
+/*.aside li {
+background: rgba(81, 134, 232, 0.3);
+padding: 5px 20px 5px 20px;
+}
+
+.aside li:hover {
+background: rgba(81, 134, 232, 0.5);
+}*/
+
+.aside a {
+color: black;
+font-family: cursive;
+font-size: 13pt;
+text-decoration: none;
+}
+
+.menu_image {
+width: 70px;
+height: 70px;
+}
+
+.section {
+display: flex;
+flex-basis: 90%;
+flex-flow: wrap;
+order: 2;
+margin: 2vh 1vw 2vh 1vw;
+min-height: 66vh;
+position: relative;
+background-color: rgba(255, 255, 255, 1);
+}
+
+.section_pub {
+display: flex;
+flex-basis: 90%;
+order: 2;
+margin: 2vh 1vw 2vh 1vw;
+min-height: 66vh;
+position: relative;
+align-items: center;
+background-color: rgba(255, 255, 255, 1);
+}
+
+.section h2 {
+text-align: center;
+color: rgb(15, 50, 145);
+padding-left: 15px;
+padding-right: 15px;
+}
+
+.section p {
+font: 14pt 'Markella', serif;
+text-indent: 30px;
+padding-left: 15px;
+padding-right: 15px;
+text-align: justify;
+color: black;
+}
+/* —-— —-— */
+
+/* —-— Подва сайта —-— */
+.footer {
+display: flex;
+order: 3;
+flex-basis: 100%;
+min-height: 15vh;
+align-items: center;
+padding-left: 20px;
+background-color: rgba(45, 113, 214, 0.9);
+}
+
+.footer p {
+font-size: 13pt;
+font-family: "Markella", "Times New Roman", serif;
+color: white;
+}
+/* —-— —-— */
+
+.active{
+text-decoration: none;
+font-family: "Markella", "Times New Roman", serif;
+font-size: 12pt;
+color: rgba(45, 113, 214, 1);
+}
+
+.my_mes{
+text-align: end;
+margin: 0 0 0 auto;
+font-family: "Markella", "Times New Roman", serif;
+font-size: 13pt;
+}
+
+@media all and (max-width: 800px) {
+.content {
+flex-flow: column wrap;
+}
+
+.aside {
+margin: 1px;
+}
+
+.section {
+margin: 1px;
+}
+
+.logo {
+height: 100px;
+width: 300px;
+}
+
+.header {
+min-height: 130px;
+margin: 1px;
+background-image: url(../img/background.png);
+background-size: 100% 200%;
+}
+
+.footer {
+min-height: 130px;
+margin: 1px;
+background-image: url(../img/background.png);
+background-size: 100% 200%;
+}
+
+.footer p {
+margin: auto;
+font: 10pt 'Markella', serif;
+}
+
+.nav ul {
+
+flex-flow: column wrap;
+padding: 0;
+}
+
+.nav a {
+text-align: center;
+padding: 10px;
+}
+
+.nav li:first-of-type a {
+border-top: none;
+}
+
+.nav li:last-of-type a {
+border-bottom: none;
+}
+}
